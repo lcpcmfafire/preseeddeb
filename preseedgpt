@@ -1,0 +1,35 @@
+# Configuração de idioma e localização
+d-i debian-installer/locale string en_US.UTF-8
+d-i keyboard-configuration/xkb-keymap select us
+d-i time/zone string America/New_York
+
+# Configuração de rede
+d-i netcfg/choose_interface select auto
+d-i netcfg/get_hostname string myserver
+d-i netcfg/get_domain string example.com
+d-i netcfg/disable_dhcp boolean true
+d-i netcfg/get_ipaddress string 192.168.1.10
+d-i netcfg/get_netmask string 255.255.255.0
+d-i netcfg/get_gateway string 192.168.1.1
+d-i netcfg/get_nameservers string 8.8.8.8
+
+# Configuração do particionamento
+d-i partman-auto/method string lvm
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-auto/choose_recipe select atomic
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+
+# Configuração do firewall
+d-i pkgsel/include string openssh-server ufw
+d-i preseed/late_command string \
+  in-target ufw enable && \
+  in-target ufw allow ssh && \
+  in-target ufw default deny incoming && \
+  in-target ufw default allow outgoing
+
+# Seleção de pacotes
+tasksel tasksel/first multiselect standard, ssh-server
+d-i apt-setup/non-free boolean true
+d-i apt-setup/contrib boolean
