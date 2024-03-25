@@ -1,37 +1,50 @@
+# Configuração do idioma e do teclado
 d-i debian-installer/locale string pt_BR.UTF-8
 d-i keyboard-configuration/xkb-keymap select br
+
+# Configuração de rede
 d-i netcfg/choose_interface select auto
 d-i netcfg/get_hostname string debian
 d-i netcfg/get_domain string workgroup
 d-i netcfg/wireless_wep string
+
+# Configuração do espelhamento de pacotes
 d-i mirror/country string manual
 d-i mirror/http/hostname string ftp.br.debian.org
 d-i mirror/http/directory string /debian
 d-i mirror/http/proxy string
+
+# Configuração do relógio
 d-i clock-setup/utc boolean true
 d-i time/zone string America/Recife
 d-i clock-setup/ntp boolean true
+
+# Configuração de particionamento automático
 d-i partman-auto/method string regular
 d-i partman-auto/choose_recipe select atomic
 d-i partman-partitioning/confirm_write_new_label boolean true
-d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
 d-i partman-md/confirm boolean true
-d-i partman-partitioning/confirm_write_new_label boolean true
-d-i partman/choose_partition select finish
-d-i partman/confirm boolean true
-d-i partman/confirm_nooverwrite boolean true
+
+# Configuração dos repositórios apt
 d-i apt-setup/non-free boolean true
 d-i apt-setup/contrib boolean true
+
+# Configuração das senhas
 d-i passwd/root-password-crypted password $6$K0kuB1PeuXk6ZaKa$LitHRHUvI1XJ7mXY5Ia0XJJJjJ6I.P1HIB4FvsQSScRPcWfhFkuF/KQ2Q3Q2Eb9AY0UH1nkAY4VWTzTjcVdbm/
 d-i passwd/user-fullname string luiz
 d-i passwd/username string luiz
-d-i passwd/user-password-crypted password  $6$K0kuB1PeuXk6ZaKa$LitHRHUvI1XJ7mXY5Ia0XJJJjJ6I.P1HIB4FvsQSScRPcWfhFkuF/KQ2Q3Q2Eb9AY0UH1nkAY4VWTzTjcVdbm/
+d-i passwd/user-password-crypted password $6$K0kuB1PeuXk6ZaKa$LitHRHUvI1XJ7mXY5Ia0XJJJjJ6I.P1HIB4FvsQSScRPcWfhFkuF/KQ2Q3Q2Eb9AY0UH1nkAY4VWTzTjcVdbm/
+
+# Seleção de tarefas e pacotes adicionais
 tasksel tasksel/first multiselect standard
-d-i pkgsel/include string \
-r-base gdebi-core\
+d-i pkgsel/include string r-base gdebi-core
+
+# Instalador do GRUB
 d-i grub-installer/only_debian boolean true
 d-i grub-installer/with_other_os boolean true
 d-i grub-installer/bootdev string /dev/sda
+
+# Finalização da instalação
 d-i finish-install/reboot_in_progress note
